@@ -48,3 +48,4 @@
 0x82377340 = {} # stub sweep: LR=0x823770D0
 0x831B80A8 = {} # stub sweep: LR=0x8328AD28
 0x8326A0F0 = {} # stub sweep: LR=0x8328A9F0
+0x831CB2B0 = {} # stub sweep: LR=0x832061AC (fixes nullptr vtable dispatch)
