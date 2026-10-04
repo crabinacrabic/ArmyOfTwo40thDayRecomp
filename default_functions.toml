@@ -62,3 +62,4 @@
 0x8297F528 = {} # stub sweep: LR=0x829AD0B0
 0x82D7BEC0 = {} # stub sweep: LR=0x82D963E8
 0x82E476F0 = {} # stub sweep: LR=0x82E6B428
+0x826884A0 = {} # Video / cutscene skip input handler
