@@ -9,3 +9,16 @@
 0x8340A178 = {} # UnresolvedCall from 0x8340A184
 0x8303E1A0 = {} # VTable thunk / indirect call
 0x830483B0 = {} # VTable thunk / indirect call
+
+# stub sweep (early init & main menu vtable thunks)
+0x826CC608 = {} # stub sweep: LR=0x826D7ECC
+0x82DDD638 = {} # stub sweep: LR=0x82DE699C
+0x82F9E538 = {} # stub sweep: LR=0x82FA8064
+0x8306C758 = {} # stub sweep: LR=0x83037F60
+0x830808E0 = {} # stub sweep: LR=0x83037F60
+0x83093270 = {} # stub sweep: LR=0x83037F60
+0x83096940 = {} # stub sweep: LR=0x83037F60
+0x830A8DB0 = {} # stub sweep: LR=0x83037F60
+0x830AA470 = {} # stub sweep: LR=0x83037F60
+0x830AB798 = {} # stub sweep: LR=0x83037F60
+0x83339470 = {} # stub sweep: LR=0x832CAC5C
