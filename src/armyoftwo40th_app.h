@@ -52,7 +52,7 @@ public:
     {
       return;
     }
-    VirtualAlloc(base + 0x00000000ull, 0x20000000ull, MEM_COMMIT, PAGE_READWRITE);
+    VirtualAlloc(base + 0x00000000ull, 0x40000000ull, MEM_COMMIT, PAGE_READWRITE);
     VirtualAlloc(base + 0x40000000ull, 0x40000000ull, MEM_COMMIT, PAGE_READWRITE);
     VirtualAlloc(base + 0x80000000ull, 0x20000000ull, MEM_COMMIT, PAGE_READWRITE);
     VirtualAlloc(base + 0xA0000000ull, 0x20000000ull, MEM_COMMIT, PAGE_READWRITE);
