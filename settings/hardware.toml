@@ -40,7 +40,7 @@ d3d12_break_on_warning = false
 d3d12_debug = false
 d3d12_dxbc_disasm = false
 d3d12_dxbc_disasm_dxilconv = false
-d3d12_pipeline_creation_threads = -1
+d3d12_pipeline_creation_threads = 8
 d3d12_queue_priority = 2
 d3d12_submit_on_primary_buffer_end = true
 d3d12_tessellation_wireframe = false
@@ -54,7 +54,7 @@ vulkan_allow_present_mode_mailbox = false
 headless = false
 log_level = "info"
 gpu_allow_invalid_fetch_constants = true
-dev_debug_runtime = false
+dev_debug_runtime = true
 
 # Authentic Console Settings:
 # Framerate lock: 30 FPS (ao2_fps_unlock = false, mode = 2)

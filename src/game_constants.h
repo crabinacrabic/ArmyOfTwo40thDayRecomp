@@ -1,51 +1,42 @@
-// game_constants.h - Game-specific constants
+// game_constants.h - Game-specific constants for Army of Two: The 40th Day (454108D8)
 #pragma once
 
 #include <cstdint>
 
 namespace GameConstants
 {
-  constexpr uint32_t kCodeBase = 0x82210000;
-  constexpr uint32_t kCodeEnd = 0x8309C604;
+  constexpr uint32_t kCodeBase = 0x82310000;
+  constexpr uint32_t kCodeEnd  = 0x82310000 + 0x13C4120; // 0x836D4120
 }
 
 namespace GameConstants::PatchConstants
 {
-  struct Patch
+  struct Patch16
   {
     std::uintptr_t address;
-    std::uint32_t value;
+    std::uint16_t value;
   };
 
-  // Ported from xenia-canary game-patches for Army of Two retail (4541084C)
-  // NOPs the frame-limiter check; game speed is tied to FPS above ~90FPS.
-  constexpr Patch FpsUnlockNop()
+  struct Patch8
   {
-    return Patch{
-        0x8247D550,
-        0x60000000};
+    std::uintptr_t address;
+    std::uint8_t value;
+  };
+
+  // Ported from xenia-canary game-patches for Army of Two: The 40th Day (454108D8)
+  // Branch around the frame-limiter check (be16 0x4800).
+  constexpr Patch16 FpsUnlockBranch()
+  {
+    return Patch16{
+        0x8275F382,
+        0x4800};
   }
 
   // Frame-rate target byte: 0x00=unlimited, 0x01=60FPS, 0x02=30FPS.
-  constexpr Patch FpsUnlockMode()
+  constexpr Patch8 FpsUnlockMode()
   {
-    return Patch{
-        0x82A56447,
-        0x01};
-  }
-
-  // "Black Shading Fix" - disables MSAA.
-  constexpr Patch DisableMsaa()
-  {
-    return Patch{
-        0x830B6FE7,
-        0x04};
-  }
-
-  constexpr Patch AnisotropicFiltering16x()
-  {
-    return Patch{
-        0x829D57D0,
-        0x38A00010};
+    return Patch8{
+        0x82EB05D7,
+        0x02}; // 30 FPS by default for retro stability
   }
 }

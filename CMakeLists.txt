@@ -1,5 +1,7 @@
 # armyoftwo40threcomp - Army of Two: The 40th Day PC Recompilation
 # Based on ReXGlue SDK v0.10.0+
+#
+# SDK boilerplate lives in generated/rexglue.cmake.
 
 cmake_minimum_required(VERSION 3.25)
 project(armyoftwo40threcomp LANGUAGES CXX)
@@ -33,6 +35,31 @@ execute_process(
 
 set(REXSDK_VERSION "")
 
+# Find the fetched SDK with any preset, not only the local-* ones from
+# CMakeUserPresets.json (Visual Studio configures the first preset on open).
+list(PREPEND CMAKE_PREFIX_PATH "${CMAKE_CURRENT_SOURCE_DIR}/rexglue/${REXSDK_PLATFORM}")
+
+# First configure on a fresh clone: generated/default/sources.cmake only exists
+# after `rexglue codegen`, and without it the recomp target is not created.
+# assets/default.xex must be in place before this runs.
+set(ARMYOFTWO40THRECOMP_GENERATED_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/generated/default/sources.cmake")
+if(NOT EXISTS "${ARMYOFTWO40THRECOMP_GENERATED_SOURCES}")
+    set(ARMYOFTWO40THRECOMP_REXGLUE_EXE
+        "${CMAKE_CURRENT_SOURCE_DIR}/rexglue/${REXSDK_PLATFORM}/bin/rexglue${CMAKE_EXECUTABLE_SUFFIX}")
+    if(EXISTS "${ARMYOFTWO40THRECOMP_REXGLUE_EXE}")
+        message(STATUS "[armyoftwo40threcomp] generated/default/sources.cmake missing - running codegen once")
+        execute_process(
+            COMMAND "${ARMYOFTWO40THRECOMP_REXGLUE_EXE}" codegen "${CMAKE_CURRENT_SOURCE_DIR}/armyoftwo40threcomp_manifest.toml"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+            RESULT_VARIABLE ARMYOFTWO40THRECOMP_CODEGEN_RESULT)
+        if(NOT ARMYOFTWO40THRECOMP_CODEGEN_RESULT EQUAL 0)
+            message(WARNING "[armyoftwo40threcomp] bootstrap codegen failed (${ARMYOFTWO40THRECOMP_CODEGEN_RESULT}); "
+                            "the build-time codegen step will report the errors")
+        endif()
+    endif()
+endif()
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${ARMYOFTWO40THRECOMP_GENERATED_SOURCES}")
+
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/generated/rexglue.cmake")
     include(generated/rexglue.cmake)
 endif()
@@ -40,6 +67,14 @@ endif()
 set(ARMYOFTWO40THRECOMP_SOURCES
     src/main.cpp
 )
+
+if(WIN32)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/armyoftworecomp.rc")
+        list(APPEND ARMYOFTWO40THRECOMP_SOURCES
+            src/armyoftworecomp.rc
+        )
+    endif()
+endif()
 
 if(WIN32)
     add_executable(armyoftwo40threcomp WIN32 ${ARMYOFTWO40THRECOMP_SOURCES})

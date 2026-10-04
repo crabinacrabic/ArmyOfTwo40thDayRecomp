@@ -2,4 +2,10 @@
 # ReXGlue codegen phase discover & gapfill
 
 [functions]
-# Boundaries to be populated during initial codegen scan of default.xex (454108D8)
+0x830FE420 = {} # UnresolvedCall from 0x830F6764
+0x831E93F8 = {} # UnresolvedCall from 0x831EAA14
+0x83422E68 = {} # UnresolvedCall from 0x8341296C
+0x82B92338 = {} # UnresolvedCall from 0x82AEB740
+0x8340A178 = {} # UnresolvedCall from 0x8340A184
+0x8303E1A0 = {} # VTable thunk / indirect call
+0x830483B0 = {} # VTable thunk / indirect call
