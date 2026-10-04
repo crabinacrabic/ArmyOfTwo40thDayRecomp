@@ -41,3 +41,7 @@
 0x834D27E0 = {} # stub sweep: LR=0x83476D0C
 0x834F75A0 = {} # stub sweep: LR=0x8348BC60
 0x835DF280 = {} # stub sweep: LR=0x835DC934
+
+# Final 2 menu rendering & presentation functions
+0x8322F130 = {} # stub sweep: LR=0x8322AB04
+0x831B80B8 = {} # stub sweep: LR=0x8328AA8C

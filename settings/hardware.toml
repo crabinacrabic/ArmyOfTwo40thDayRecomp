@@ -20,7 +20,7 @@ host_present_from_non_ui_thread = true
 
 window_width = 1920
 window_height = 1080
-fullscreen = true
+fullscreen = false
 monitor = 0
 resolution = "1920x1080"
 
