@@ -22,3 +22,9 @@
 0x830AA470 = {} # stub sweep: LR=0x83037F60
 0x830AB798 = {} # stub sweep: LR=0x83037F60
 0x83339470 = {} # stub sweep: LR=0x832CAC5C
+
+# Frontend & UI sound loading vtable thunks
+0x826D7F88 = {} # stub sweep: LR=0x82704BA8
+0x82E38FA0 = {} # stub sweep: LR=0x8319C8C8
+0x8344C738 = {} # stub sweep: LR=0x83619F84
+0x834D2E18 = {} # stub sweep: LR=0x83490B44
