@@ -16,6 +16,9 @@ texture_cache_memory_limit_hard = 4096
 clear_memory_page_state = true
 readback_memexport = true
 readback_memexport_fast = true
+# UE3 reads resolved render targets on the CPU (HDR eye adaptation / auto-exposure).
+# Without fast readback, the CPU stalls synchronously waiting for GPU flushes (4-second freezes).
+readback_resolve = "fast"
 host_present_from_non_ui_thread = true
 
 window_width = 1920
@@ -40,7 +43,7 @@ d3d12_break_on_warning = false
 d3d12_debug = false
 d3d12_dxbc_disasm = false
 d3d12_dxbc_disasm_dxilconv = false
-d3d12_pipeline_creation_threads = 8
+d3d12_pipeline_creation_threads = -1
 d3d12_queue_priority = 2
 d3d12_submit_on_primary_buffer_end = true
 d3d12_tessellation_wireframe = false
@@ -52,9 +55,9 @@ vulkan_allow_present_mode_fifo_relaxed = false
 vulkan_allow_present_mode_mailbox = false
 
 headless = false
-log_level = "info"
+log_level = "warning"
 gpu_allow_invalid_fetch_constants = true
-dev_debug_runtime = true
+dev_debug_runtime = false
 
 # Authentic Console Settings:
 # Framerate lock: 30 FPS (ao2_fps_unlock = false, mode = 2)
