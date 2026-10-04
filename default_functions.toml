@@ -63,3 +63,13 @@
 0x82D7BEC0 = {} # stub sweep: LR=0x82D963E8
 0x82E476F0 = {} # stub sweep: LR=0x82E6B428
 0x826884A0 = {} # Video / cutscene skip input handler
+0x823B1118 = {} # stub sweep: LR=0x82553748
+0x825DE8B8 = {} # stub sweep: LR=0x82DB0F8C
+0x82663D40 = {} # stub sweep: LR=0x825836C8 (UI dismiss / cancel)
+0x8287AC18 = {} # stub sweep: LR=0x82841414
+0x828F45E0 = {} # stub sweep: LR=0x823E8D9C
+0x82C41A08 = {} # stub sweep: LR=0x82C1FFE0
+0x82D7BE40 = {} # stub sweep: LR=0x82D962C0
+0x82D86F68 = {} # stub sweep: LR=0x82D9EC2C
+0x82DF5890 = {} # stub sweep: LR=0x82D95910
+0x8344CD10 = {} # stub sweep: LR=0x82D888F4

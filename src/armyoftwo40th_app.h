@@ -79,6 +79,17 @@ public:
   {
     PrecommitMemoryAliases();
 
+#if defined(_WIN32)
+    uint8_t *base = rex::Runtime::instance() ? rex::Runtime::instance()->virtual_membase() : nullptr;
+    if (base)
+    {
+      DWORD old_protect;
+      // Xbox 360 does not enforce W^X. Make full image space (0x82000000 - 0x84000000)
+      // writable so runtime patches/data stores by UE3 don't trigger access violations.
+      VirtualProtect(base + 0x82000000ull, 0x02000000ull, PAGE_EXECUTE_READWRITE, &old_protect);
+    }
+#endif
+
     game_patches::FpsUnlock();
     game_patches::DisableMsaa();
     game_patches::AnisotropicFiltering16x();
