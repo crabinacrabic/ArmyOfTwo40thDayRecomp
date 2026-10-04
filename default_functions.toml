@@ -45,3 +45,6 @@
 # Final 2 menu rendering & presentation functions
 0x8322F130 = {} # stub sweep: LR=0x8322AB04
 0x831B80B8 = {} # stub sweep: LR=0x8328AA8C
+0x82377340 = {} # stub sweep: LR=0x823770D0
+0x831B80A8 = {} # stub sweep: LR=0x8328AD28
+0x8326A0F0 = {} # stub sweep: LR=0x8328A9F0
