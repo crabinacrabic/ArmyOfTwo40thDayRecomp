@@ -75,20 +75,45 @@ public:
     }
   }
 
+  static void UnlockImageMemoryProtection()
+  {
+#if defined(_WIN32)
+    uint8_t *base = rex::Runtime::instance() ? rex::Runtime::instance()->virtual_membase() : nullptr;
+    if (!base)
+    {
+      return;
+    }
+    // Xbox 360 does not enforce W^X. Walk every committed section in the module range
+    // and make it PAGE_EXECUTE_READWRITE, handling section boundaries properly.
+    uint8_t *curr = base + 0x82000000ull;
+    uint8_t *end = base + 0x84000000ull;
+    while (curr < end)
+    {
+      MEMORY_BASIC_INFORMATION mbi{};
+      if (VirtualQuery(curr, &mbi, sizeof(mbi)))
+      {
+        if (mbi.State == MEM_COMMIT && mbi.BaseAddress != nullptr)
+        {
+          DWORD old_protect;
+          VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_EXECUTE_READWRITE, &old_protect);
+        }
+        curr = (uint8_t *)mbi.BaseAddress + (mbi.RegionSize ? mbi.RegionSize : 0x1000);
+      }
+      else
+      {
+        curr += 0x1000;
+      }
+    }
+    // Explicitly guarantee the page containing 0x834E8B10 is writable
+    DWORD old_p;
+    VirtualProtect(base + (0x834E8B10ull & ~0xFFFFull), 0x20000ull, PAGE_EXECUTE_READWRITE, &old_p);
+#endif
+  }
+
   void OnPostLoadXexImage() override
   {
     PrecommitMemoryAliases();
-
-#if defined(_WIN32)
-    uint8_t *base = rex::Runtime::instance() ? rex::Runtime::instance()->virtual_membase() : nullptr;
-    if (base)
-    {
-      DWORD old_protect;
-      // Xbox 360 does not enforce W^X. Make full image space (0x82000000 - 0x84000000)
-      // writable so runtime patches/data stores by UE3 don't trigger access violations.
-      VirtualProtect(base + 0x82000000ull, 0x02000000ull, PAGE_EXECUTE_READWRITE, &old_protect);
-    }
-#endif
+    UnlockImageMemoryProtection();
 
     game_patches::FpsUnlock();
     game_patches::DisableMsaa();
@@ -98,6 +123,7 @@ public:
   void OnPostSetup() override
   {
     PrecommitMemoryAliases();
+    UnlockImageMemoryProtection();
     utils::LoadSettingsFiles();
 
 #ifdef REXGLUE_ENABLE_PERF_COUNTERS
