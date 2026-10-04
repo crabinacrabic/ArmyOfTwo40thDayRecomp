@@ -51,3 +51,11 @@
 0x831CB2B0 = {} # stub sweep: LR=0x832061AC (fixes nullptr vtable dispatch)
 0x834D27E8 = {} # stub sweep: LR=0x83472948 (campaign start)
 0x82C06340 = {} # stub sweep: LR=0x82C2E9B8 (campaign start)
+0x8245CE28 = {} # stub sweep: LR=0x82D95DC0
+0x828855C0 = {} # stub sweep: LR=0x828BD0C4
+0x82BF4B90 = {} # stub sweep: LR=0x82549178
+0x82D98500 = {} # stub sweep: LR=0x82D96B88
+0x82DED4C8 = {} # stub sweep: LR=0x82D7DD24
+0x834F3650 = {} # stub sweep: LR=0x834AA81C
+0x83525AE0 = {} # stub sweep: LR=0x82BCB890
+0x83526270 = {} # stub sweep: LR=0x834CC3A0

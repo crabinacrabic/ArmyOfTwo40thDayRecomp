@@ -636,3 +636,29 @@ cmake -B build -T ClangCL -D CMAKE_CXX_STANDARD=23
 3. **Генерация исходного C++ кода**:
    Успешно выполнен `rexglue codegen armyoftwo40threcomp_manifest.toml` (6 файлов сгенерировано заново, код валидирован).
 4. **Готовность к сборке**: Проект готов к компиляции в Visual Studio (F7).
+
+### Запуск #12: Полномасштабная Загрузка Ассетов Уровня 1 (Шанхай)
+- **Статус**: Огромный шаг вперед! Ошибка `write of guest 0x20000000` полностью побеждена!
+- **Прогресс загрузки**:
+  - Движок успешно инициализировал и начал подгрузку сцены 1-го уровня:
+  - Подгружены объекты и разрушаемые элементы: `Car_Destructible.xxx`, `CSA_01_Street_CourtyardDoor.xxx`, `Prefab_Beacon.xxx`, `Prefab_CageDoor.xxx`.
+  - Подгружены эмбиенты толпы и окружения: `Amb_Attack_Crowd_In_Alley.xxx`, `Amb_Attack_Streets1.xxx`, `Amb_Spot_Sparks_VFX_1/2.xxx`, `Amb_Spot_Wind_Trees_Rdm.xxx`.
+  - Подгружены катсцены и реплики: диалоги `VO_INT_MAI_JB.xxx`, `VO_SCENE_1_01.xxx` — `VO_SCENE_1_06.xxx`.
+  - Подгружен весь стартовый арсенал оружия: `gun_type_rem870`, `gun_type_g36c`, `gun_type_type77`, `gun_type_dragunov`, `gun_type_rpg7`, `gun_type_scar`.
+- **Локализация ошибки (Crash)**:
+  - `[error] [sys] Unhandled guest access violation: read of guest 0x40E90000 (host 0x0000000140E90000) on thread 0xF8000028`
+  - Одновременно `stub sweep` зафиксировал вызовы 8 незарегистрированных функций десериализации/инициализации объектов уровня:
+    * `0x8245CE28` (LR=`0x82D95DC0`)
+    * `0x828855C0` (LR=`0x828BD0C4`)
+    * `0x82BF4B90` (LR=`0x82549178`)
+    * `0x82D98500` (LR=`0x82D96B88`)
+    * `0x82DED4C8` (LR=`0x82D7DD24`)
+    * `0x834F3650` (LR=`0x834AA81C`)
+    * `0x83525AE0` (LR=`0x82BCB890`)
+    * `0x83526270` (LR=`0x834CC3A0`)
+  - Поскольку эти функции были заглушками (`stubs`), объекты не были инициализированы в куче гостя, что привело к попытке чтения незаполненного диапазона `0x40E90000`.
+
+### Внесенные исправления (Подготовка к Запуску #13):
+1. **Декларация 8 функций уровня в `default_functions.toml`**: Все 8 функций добавлены.
+2. **Кодогенерация C++**: Успешно выполнен `rexglue codegen armyoftwo40threcomp_manifest.toml` (11 файлов обновлено).
+3. **Статус**: Готово к компиляции по **F7** в Visual Studio.
