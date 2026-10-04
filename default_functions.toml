@@ -28,3 +28,16 @@
 0x82E38FA0 = {} # stub sweep: LR=0x8319C8C8
 0x8344C738 = {} # stub sweep: LR=0x83619F84
 0x834D2E18 = {} # stub sweep: LR=0x83490B44
+
+# Main menu state handlers (FrontEnd states 1, 2, 3)
+0x82374A28 = {} # stub sweep: LR=0x82358ED0
+0x82A1EDA8 = {} # stub sweep: LR=0x8289F978
+0x830F64B0 = {} # stub sweep: LR=0x830F74C0
+0x831AEAB0 = {} # stub sweep: LR=0x831FC694
+0x831AEB88 = {} # stub sweep: LR=0x83243F9C
+0x831FDB60 = {} # stub sweep: LR=0x83207B04
+0x8321C868 = {} # stub sweep: LR=0x83248C14
+0x834D1E48 = {} # stub sweep: LR=0x8346419C
+0x834D27E0 = {} # stub sweep: LR=0x83476D0C
+0x834F75A0 = {} # stub sweep: LR=0x8348BC60
+0x835DF280 = {} # stub sweep: LR=0x835DC934
