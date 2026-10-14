@@ -20,6 +20,12 @@
 
 История запусков и технический разбор — в [docs/DEVLOG.md](docs/DEVLOG.md).
 
+## Скриншоты
+
+![Улицы Шанхая](gameplay_shanghai_first_boot.jpg)
+
+![Лифт и оружейное меню](gameplay_elevator_weapon_customization.png)
+
 ## Что нужно
 
 - Windows 10/11 x64 и видеокарта с Direct3D 12.
