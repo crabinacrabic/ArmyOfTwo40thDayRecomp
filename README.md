@@ -26,6 +26,10 @@
 
 ![Лифт и оружейное меню](gameplay_elevator_weapon_customization.png)
 
+![Главное меню](menu_camera.webp)
+
+![Бой на улицах: Rios и Salem](gameplay_rios_salem.webp)
+
 ## Что нужно
 
 - Windows 10/11 x64 и видеокарта с Direct3D 12.
