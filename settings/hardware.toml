@@ -57,11 +57,11 @@ vulkan_allow_present_mode_mailbox = false
 headless = false
 log_level = "warn"
 gpu_allow_invalid_fetch_constants = true
-dev_debug_runtime = true
+dev_debug_runtime = false
 
 # Authentic Console Settings:
-# Framerate lock: 30 FPS (ao2_fps_unlock = false, mode = 2)
-ao2_fps_unlock = false
+# Framerate lock: 30 FPS (ao2_fps_unlock = true, mode = 2)
+ao2_fps_unlock = true
 ao2_fps_unlock_mode = 2
 
 # Black Shading Fix: disables MSAA
