@@ -15,8 +15,12 @@
 #include <rex/ui/imgui_dialog.h>
 #include <rex/ui/imgui_drawer.h>
 
-#include <string>
+#include <chrono>
 #include <cstdint>
+#include <string>
+#include <thread>
+
+#include "game_cvars.h"
 
 namespace rex::ui {
 
@@ -30,6 +34,25 @@ public:
 
 protected:
   void OnDraw(ImGuiIO& io) override {
+    // High-precision authentic 30 FPS console frame limiter
+    int32_t target_fps = REXCVAR_GET(ao2_framerate_limit);
+    if (target_fps > 0) {
+      static auto last_present_time = std::chrono::steady_clock::now();
+      const double target_duration_us = 1000000.0 / static_cast<double>(target_fps);
+      auto now = std::chrono::steady_clock::now();
+      auto elapsed_us = std::chrono::duration_cast<std::chrono::microseconds>(now - last_present_time).count();
+      if (elapsed_us < target_duration_us) {
+        auto sleep_us = target_duration_us - elapsed_us;
+        if (sleep_us > 2000) {
+          std::this_thread::sleep_for(std::chrono::microseconds(sleep_us - 1500));
+        }
+        while (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - last_present_time).count() < target_duration_us) {
+          YieldProcessor();
+        }
+      }
+      last_present_time = std::chrono::steady_clock::now();
+    }
+
     // Check toggle hotkey (F2)
     if (ImGui::IsKeyPressed(ImGuiKey_F2, false)) {
       enabled_ = !enabled_;

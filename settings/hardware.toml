@@ -36,7 +36,7 @@ store_shaders = true
 present_letterbox = true
 
 d3d12_adapter = -1
-d3d12_allow_variable_refresh_rate_and_tearing = true
+d3d12_allow_variable_refresh_rate_and_tearing = false
 d3d12_bindless = true
 d3d12_break_on_error = false
 d3d12_break_on_warning = false
@@ -50,7 +50,7 @@ d3d12_tessellation_wireframe = false
 
 render_target_path_vulkan = "fbo"
 vulkan_log_debug_messages = false
-vulkan_allow_present_mode_immediate = true
+vulkan_allow_present_mode_immediate = false
 vulkan_allow_present_mode_fifo_relaxed = false
 vulkan_allow_present_mode_mailbox = false
 
@@ -59,9 +59,10 @@ log_level = "warn"
 gpu_allow_invalid_fetch_constants = true
 dev_debug_runtime = false
 
-# Authentic Console Settings:
-# Framerate lock: 30 FPS (ao2_fps_unlock = true, mode = 2)
-ao2_fps_unlock = true
+# Authentic Console Settings (Strict 30 FPS):
+video_mode_refresh_rate = "30"
+ao2_framerate_limit = 30
+ao2_fps_unlock = false
 ao2_fps_unlock_mode = 2
 
 # Black Shading Fix: disables MSAA

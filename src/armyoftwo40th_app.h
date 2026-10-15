@@ -127,6 +127,10 @@ public:
     UnlockImageMemoryProtection();
     utils::LoadSettingsFiles();
 
+    game_patches::FpsUnlock();
+    game_patches::DisableMsaa();
+    game_patches::AnisotropicFiltering16x();
+
 #ifdef REXGLUE_ENABLE_PERF_COUNTERS
     rex::perf::SetCsvLogPath(rex::cvar::GetFlagByName("perf_log_csv"));
 #endif

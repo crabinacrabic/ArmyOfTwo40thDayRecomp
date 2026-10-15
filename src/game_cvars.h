@@ -20,6 +20,9 @@ REXCVAR_DEFINE_BOOL(ao2_fps_unlock, false, "Gameplay",
 REXCVAR_DEFINE_INT32(ao2_fps_unlock_mode, 1, "Gameplay",
                      "Frame-rate target used when ao2_fps_unlock is enabled: 0=unlimited, 1=60FPS, 2=30FPS");
 
+REXCVAR_DEFINE_INT32(ao2_framerate_limit, 30, "Gameplay",
+                     "Hard console frame rate limiter in FPS (e.g. 30, 60, 0=unlimited)");
+
 REXCVAR_DEFINE_BOOL(ao2_disable_msaa, false, "Gameplay",
                     "Black Shading Fix: disables MSAA");
 
