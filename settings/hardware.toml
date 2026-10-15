@@ -68,3 +68,7 @@ ao2_fps_unlock_mode = 2
 # Black Shading Fix: disables MSAA
 ao2_disable_msaa = true
 ao2_anisotropic_16x = false
+
+# Lens Flare Wall Bleeding Fix: disables flare manager registration
+ao2_disable_lens_flares = true
+

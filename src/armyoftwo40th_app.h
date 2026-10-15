@@ -8,7 +8,9 @@
 #include <string>
 
 #if defined(_WIN32)
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif
 #include <windows.h>
 #endif
 
@@ -20,6 +22,71 @@
 #include <rex/system/gpu_plugin.h>
 
 #include "generated/default/armyoftwo40threcomp_pch.h"
+
+#if defined(_WIN32)
+static LONG WINAPI GuestMemoryCrashHandler(EXCEPTION_POINTERS *ep)
+{
+  if (ep->ExceptionRecord->ExceptionCode == EXCEPTION_ACCESS_VIOLATION)
+  {
+    uintptr_t fault_addr = ep->ExceptionRecord->ExceptionInformation[1];
+    uint8_t *base = rex::Runtime::instance() ? rex::Runtime::instance()->virtual_membase() : nullptr;
+    if (base && fault_addr >= (uintptr_t)base && fault_addr < (uintptr_t)base + 0x100000000ull)
+    {
+      uint32_t guest_addr = (uint32_t)(fault_addr - (uintptr_t)base);
+      if (guest_addr >= 0x7F000000u && guest_addr <= 0x7FFFFFFFu)
+      {
+        return EXCEPTION_CONTINUE_SEARCH;
+      }
+      MEMORY_BASIC_INFORMATION mbi{};
+      if (VirtualQuery((void *)fault_addr, &mbi, sizeof(mbi)))
+      {
+        if (mbi.State == MEM_COMMIT)
+        {
+          DWORD old_protect = 0;
+          DWORD new_protect = (mbi.AllocationProtect & (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY))
+                                  ? PAGE_EXECUTE_READWRITE
+                                  : PAGE_READWRITE;
+          if (VirtualProtect(mbi.BaseAddress, mbi.RegionSize, new_protect, &old_protect))
+          {
+            return EXCEPTION_CONTINUE_EXECUTION;
+          }
+          if (new_protect != PAGE_READWRITE && VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_READWRITE, &old_protect))
+          {
+            return EXCEPTION_CONTINUE_EXECUTION;
+          }
+          void *page_4k = (void *)(fault_addr & ~0xFFFull);
+          if (VirtualProtect(page_4k, 0x1000, PAGE_READWRITE, &old_protect))
+          {
+            return EXCEPTION_CONTINUE_EXECUTION;
+          }
+        }
+        else if (mbi.State == MEM_RESERVE)
+        {
+          void *page_base = (void *)(fault_addr & ~0xFFFFull);
+          if (VirtualAlloc(page_base, 0x10000, MEM_COMMIT, PAGE_READWRITE))
+          {
+            return EXCEPTION_CONTINUE_EXECUTION;
+          }
+          void *page_4k = (void *)(fault_addr & ~0xFFFull);
+          if (VirtualAlloc(page_4k, 0x1000, MEM_COMMIT, PAGE_READWRITE))
+          {
+            return EXCEPTION_CONTINUE_EXECUTION;
+          }
+        }
+        else if (mbi.State == MEM_FREE)
+        {
+          void *page_base = (void *)(fault_addr & ~0xFFFFull);
+          if (VirtualAlloc(page_base, 0x10000, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE))
+          {
+            return EXCEPTION_CONTINUE_EXECUTION;
+          }
+        }
+      }
+    }
+  }
+  return EXCEPTION_CONTINUE_SEARCH;
+}
+#endif
 
 #include "debug_tools.h"
 #include "game_cvars.h"
@@ -41,6 +108,9 @@ public:
   static std::unique_ptr<rex::ui::WindowedApp> Create(
       rex::ui::WindowedAppContext &ctx)
   {
+#if defined(_WIN32)
+    AddVectoredExceptionHandler(0, GuestMemoryCrashHandler);
+#endif
     return std::unique_ptr<Armyoftwo40thApp>(new Armyoftwo40thApp(ctx, "armyoftwo40threcomp",
                                                                  PPCImageConfig));
   }
@@ -84,21 +154,29 @@ public:
     {
       return;
     }
-    // Xbox 360 does not enforce W^X. Walk every committed section in the module range
-    // and make it PAGE_EXECUTE_READWRITE, handling section boundaries properly.
-    uint8_t *curr = base + 0x82000000ull;
-    uint8_t *end = base + 0x84000000ull;
+    // Xbox 360 does not enforce W^X. Walk every committed section in the 4GB guest memory arena
+    // and make it PAGE_EXECUTE_READWRITE or PAGE_READWRITE, handling section boundaries properly.
+    uint8_t *curr = base;
+    uint8_t *end = base + 0x100000000ull;
     while (curr < end)
     {
       MEMORY_BASIC_INFORMATION mbi{};
       if (VirtualQuery(curr, &mbi, sizeof(mbi)))
       {
-        if (mbi.State == MEM_COMMIT && mbi.BaseAddress != nullptr)
+        if (mbi.State == MEM_COMMIT && mbi.BaseAddress != nullptr &&
+            (mbi.Protect == PAGE_READONLY || mbi.Protect == PAGE_NOACCESS))
         {
-          DWORD old_protect;
-          VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_EXECUTE_READWRITE, &old_protect);
+          DWORD old_protect = 0;
+          DWORD new_protect = (mbi.AllocationProtect & (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY))
+                                  ? PAGE_EXECUTE_READWRITE
+                                  : PAGE_READWRITE;
+          if (!VirtualProtect(mbi.BaseAddress, mbi.RegionSize, new_protect, &old_protect))
+          {
+            VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_READWRITE, &old_protect);
+          }
         }
-        curr = (uint8_t *)mbi.BaseAddress + (mbi.RegionSize ? mbi.RegionSize : 0x1000);
+        size_t step = mbi.RegionSize ? mbi.RegionSize : 0x1000;
+        curr = (uint8_t *)mbi.BaseAddress + step;
       }
       else
       {

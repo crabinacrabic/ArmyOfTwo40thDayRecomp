@@ -29,5 +29,9 @@ REXCVAR_DEFINE_BOOL(ao2_disable_msaa, false, "Gameplay",
 REXCVAR_DEFINE_BOOL(ao2_anisotropic_16x, false, "Gameplay",
                     "16x Anisotropic Filtering");
 
+REXCVAR_DEFINE_BOOL(ao2_disable_lens_flares, true, "Gameplay",
+                    "Lens Flare Wall Bleeding Fix: disables flare manager registration");
+
 REXCVAR_DEFINE_BOOL(dev_debug_runtime, false, "Debug",
                     "Enable runtime debug tools (stub sweep, missing function scan)");
+
