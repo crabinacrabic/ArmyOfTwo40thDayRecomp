@@ -3,7 +3,7 @@
 
 gpu_plugin = "xenos"
 graphics_backend = "any"
-vsync = false
+vsync = true
 
 # Internal render scale (1 = native 720p without broken bloom / blinding light)
 resolution_scale = 1
