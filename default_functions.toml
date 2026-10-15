@@ -75,3 +75,4 @@
 0x8344CD10 = {} # stub sweep: LR=0x82D888F4
 0x835DF270 = {} # stub sweep: LR=0x835DB458 (Highrise combat transition)
 0x835DF278 = {} # stub sweep: LR=0x835DB63C (Highrise combat transition #2)
+0x8245CE78 = {} # Elevator exit corridor lighting trigger (Launch 19 crash fix)
