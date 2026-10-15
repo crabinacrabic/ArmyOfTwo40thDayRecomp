@@ -1,0 +1,31 @@
+{
+  "$schema": "https://recomp.fyi/schema/v1.json",
+  "game": "Army of Two: The 40th Day",
+  "wikidata": "Q2436570",
+  "system": "Xbox 360",
+  "type": "recomp",
+  "original": {
+    "serial": "454108D8",
+    "revision": "0.0.0.2"
+  },
+  "project": "Army of Two: The 40th Day PC Recompilation",
+  "status": "playable",
+  "targets": [
+    "Windows"
+  ],
+  "toolchain": "Rexglue",
+  "approach": "Static recompilation via ReXGlue SDK with native D3D12 ROV lighting",
+  "maintainers": [
+    {
+      "name": "crabinacrabic",
+      "link": "https://github.com/crabinacrabic"
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/crabinacrabic/ArmyOfTwo40thDayRecomp"
+    }
+  ],
+  "notes": "Native Windows port via ReXGlue static recompilation. Strict 30 FPS console lock, D3D12 ROV rasterizer lighting fix, lens flare wall bleeding hook fix, and VEH memory protection."
+}
