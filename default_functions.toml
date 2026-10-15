@@ -74,3 +74,4 @@
 0x82DF5890 = {} # stub sweep: LR=0x82D95910
 0x8344CD10 = {} # stub sweep: LR=0x82D888F4
 0x835DF270 = {} # stub sweep: LR=0x835DB458 (Highrise combat transition)
+0x835DF278 = {} # stub sweep: LR=0x835DB63C (Highrise combat transition #2)
